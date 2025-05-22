@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { theme } from '@/styles/theme';
 import { IconButton } from '@/components/ui/IconButton';
-import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Mock data
 const MEDIA_ITEMS = [
@@ -62,24 +62,24 @@ export default function MediaScreen() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentItem, setCurrentItem] = useState<typeof MEDIA_ITEMS[0] | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  
+
   const filteredMedia = MEDIA_ITEMS.filter(
     item => selectedCategory === 'all' || item.type === selectedCategory
   );
-  
+
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
   };
-  
+
   const handleMediaSelect = (item: typeof MEDIA_ITEMS[0]) => {
     setCurrentItem(item);
     setIsPlaying(true);
   };
-  
+
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
-  
+
   const renderCategory = ({ item }: { item: typeof MEDIA_CATEGORIES[0] }) => (
     <Pressable
       style={[
@@ -88,7 +88,7 @@ export default function MediaScreen() {
       ]}
       onPress={() => handleCategorySelect(item.id)}
     >
-      <Text 
+      <Text
         style={[
           styles.categoryText,
           selectedCategory === item.id && styles.selectedCategoryText
@@ -99,7 +99,7 @@ export default function MediaScreen() {
       {selectedCategory === item.id && <View style={styles.activeIndicator} />}
     </Pressable>
   );
-  
+
   const renderMediaItem = ({ item }: { item: typeof MEDIA_ITEMS[0] }) => (
     <Animated.View entering={FadeIn.duration(400)} style={styles.mediaItemContainer}>
       <Pressable
@@ -117,13 +117,13 @@ export default function MediaScreen() {
       </Pressable>
     </Animated.View>
   );
-  
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Media</Text>
       </View>
-      
+
       <FlatList
         data={MEDIA_CATEGORIES}
         renderItem={renderCategory}
@@ -132,7 +132,7 @@ export default function MediaScreen() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.categoriesList}
       />
-      
+
       <FlatList
         data={filteredMedia}
         renderItem={renderMediaItem}
@@ -143,33 +143,33 @@ export default function MediaScreen() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.mediaList}
       />
-      
+
       {currentItem && (
         <View style={styles.playerContainer}>
           <View style={styles.playerInfo}>
-            <Image 
-              source={{ uri: currentItem.imageUrl }} 
-              style={styles.playerThumbnail} 
+            <Image
+              source={{ uri: currentItem.imageUrl }}
+              style={styles.playerThumbnail}
             />
             <View style={styles.playerTextContainer}>
               <Text style={styles.playerTitle}>{currentItem.title}</Text>
               <Text style={styles.playerSubtitle}>{currentItem.subtitle}</Text>
             </View>
           </View>
-          
+
           <View style={styles.playerControls}>
             <IconButton
-              icon={<SkipBack size={20} color={theme.colors.text.primary} />}
+              icon={<MaterialCommunityIcons name="skip-backward" size={20} color={theme.colors.text.primary} />}
               onPress={() => {}}
               variant="ghost"
               size="sm"
             />
-            
+
             <IconButton
               icon={
-                isPlaying 
-                  ? <Pause size={24} color="white" /> 
-                  : <Play size={24} color="white" />
+                isPlaying
+                  ? <MaterialCommunityIcons name="pause" size={24} color="white" />
+                  : <MaterialCommunityIcons name="play" size={24} color="white" />
               }
               onPress={togglePlayPause}
               variant="filled"
@@ -177,15 +177,15 @@ export default function MediaScreen() {
               size="lg"
               style={styles.playButton}
             />
-            
+
             <IconButton
-              icon={<SkipForward size={20} color={theme.colors.text.primary} />}
+              icon={<MaterialCommunityIcons name="skip-forward" size={20} color={theme.colors.text.primary} />}
               onPress={() => {}}
               variant="ghost"
               size="sm"
             />
           </View>
-          
+
           <View style={styles.progressContainer}>
             <View style={styles.progressBar}>
               <View style={styles.progressFill} />

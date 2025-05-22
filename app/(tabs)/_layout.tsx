@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet, View } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { MessageSquare, Book, Heart, PlayCircle } from 'lucide-react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '@/styles/theme';
 
 export default function TabLayout() {
@@ -32,7 +32,7 @@ export default function TabLayout() {
         options={{
           title: 'Chat',
           tabBarIcon: ({ color, size }) => (
-            <MessageSquare size={size} color={color} />
+            <MaterialCommunityIcons name="message-text" size={size} color={color} />
           ),
         }}
       />
@@ -41,7 +41,7 @@ export default function TabLayout() {
         options={{
           title: 'Bible',
           tabBarIcon: ({ color, size }) => (
-            <Book size={size} color={color} />
+            <MaterialCommunityIcons name="book-open-variant" size={size} color={color} />
           ),
         }}
       />
@@ -50,7 +50,7 @@ export default function TabLayout() {
         options={{
           title: 'Prayers',
           tabBarIcon: ({ color, size }) => (
-            <Heart size={size} color={color} />
+            <MaterialCommunityIcons name="heart" size={size} color={color} />
           ),
         }}
       />
@@ -59,7 +59,7 @@ export default function TabLayout() {
         options={{
           title: 'Media',
           tabBarIcon: ({ color, size }) => (
-            <PlayCircle size={size} color={color} />
+            <MaterialCommunityIcons name="play-circle" size={size} color={color} />
           ),
         }}
       />

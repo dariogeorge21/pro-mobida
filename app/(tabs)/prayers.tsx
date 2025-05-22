@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Pressable, TextInput, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { 
-  FadeIn, 
-  useAnimatedStyle, 
-  useSharedValue, 
-  withTiming 
+import Animated, {
+  FadeIn,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
 } from 'react-native-reanimated';
 import { theme } from '@/styles/theme';
 import { CustomCard } from '@/components/ui/CustomCard';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { IconButton } from '@/components/ui/IconButton';
-import { X, Plus, Search } from 'lucide-react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Mock data
 const PRAYER_CATEGORIES = [
@@ -67,24 +67,24 @@ export default function PrayersScreen() {
   const [selectedPrayer, setSelectedPrayer] = useState<typeof PRAYERS[0] | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const modalScale = useSharedValue(0.9);
-  
-  const filteredPrayers = PRAYERS.filter(prayer => 
+
+  const filteredPrayers = PRAYERS.filter(prayer =>
     (selectedCategory === 'all' || prayer.category === selectedCategory) &&
-    (searchQuery === '' || 
+    (searchQuery === '' ||
       prayer.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prayer.text.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-  
+
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
   };
-  
+
   const handlePrayerSelect = (prayer: typeof PRAYERS[0]) => {
     setSelectedPrayer(prayer);
     setModalVisible(true);
     modalScale.value = withTiming(1, { duration: 300 });
   };
-  
+
   const closeModal = () => {
     modalScale.value = withTiming(0.9, { duration: 200 });
     setTimeout(() => {
@@ -92,13 +92,13 @@ export default function PrayersScreen() {
       setSelectedPrayer(null);
     }, 200);
   };
-  
+
   const animatedModalStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: modalScale.value }],
     };
   });
-  
+
   const renderCategory = ({ item }: { item: typeof PRAYER_CATEGORIES[0] }) => (
     <Pressable
       style={[
@@ -107,7 +107,7 @@ export default function PrayersScreen() {
       ]}
       onPress={() => handleCategorySelect(item.id)}
     >
-      <Text 
+      <Text
         style={[
           styles.categoryText,
           selectedCategory === item.id && styles.selectedCategoryText
@@ -117,11 +117,11 @@ export default function PrayersScreen() {
       </Text>
     </Pressable>
   );
-  
+
   const renderPrayer = ({ item }: { item: typeof PRAYERS[0] }) => (
     <Animated.View entering={FadeIn.duration(400).delay(100)}>
-      <CustomCard 
-        style={styles.prayerCard} 
+      <CustomCard
+        style={styles.prayerCard}
         onPress={() => handlePrayerSelect(item)}
       >
         <Text style={styles.prayerTitle}>{item.title}</Text>
@@ -131,20 +131,20 @@ export default function PrayersScreen() {
       </CustomCard>
     </Animated.View>
   );
-  
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Prayer Collection</Text>
         <IconButton
-          icon={<Plus size={22} color={theme.colors.text.secondary} />}
+          icon={<MaterialCommunityIcons name="plus" size={22} color={theme.colors.text.secondary} />}
           onPress={() => {}}
           variant="ghost"
         />
       </View>
-      
+
       <View style={styles.searchContainer}>
-        <Search size={20} color={theme.colors.text.secondary} style={styles.searchIcon} />
+        <MaterialCommunityIcons name="magnify" size={20} color={theme.colors.text.secondary} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search prayers..."
@@ -153,7 +153,7 @@ export default function PrayersScreen() {
         />
         {searchQuery.length > 0 && (
           <IconButton
-            icon={<X size={18} color={theme.colors.text.secondary} />}
+            icon={<MaterialCommunityIcons name="close" size={18} color={theme.colors.text.secondary} />}
             onPress={() => setSearchQuery('')}
             variant="ghost"
             size="sm"
@@ -161,7 +161,7 @@ export default function PrayersScreen() {
           />
         )}
       </View>
-      
+
       <FlatList
         data={PRAYER_CATEGORIES}
         renderItem={renderCategory}
@@ -170,14 +170,14 @@ export default function PrayersScreen() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.categoriesList}
       />
-      
+
       <FlatList
         data={filteredPrayers}
         renderItem={renderPrayer}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.prayersList}
       />
-      
+
       <Modal
         visible={modalVisible}
         transparent
@@ -191,16 +191,16 @@ export default function PrayersScreen() {
                 {selectedPrayer?.title}
               </Text>
               <IconButton
-                icon={<X size={22} color={theme.colors.text.secondary} />}
+                icon={<MaterialCommunityIcons name="close" size={22} color={theme.colors.text.secondary} />}
                 onPress={closeModal}
                 variant="ghost"
               />
             </View>
-            
+
             <Text style={styles.prayerText}>
               {selectedPrayer?.text}
             </Text>
-            
+
             <View style={styles.modalActions}>
               <PrimaryButton
                 title="Pray Now"

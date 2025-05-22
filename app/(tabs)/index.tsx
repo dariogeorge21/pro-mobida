@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, FlatList, Keyboard } from 'react-nat
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/styles/theme';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
-import { Send } from 'lucide-react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CustomCard } from '@/components/ui/CustomCard';
 
 interface Message {
@@ -25,10 +25,10 @@ const initialMessages: Message[] = [
 export default function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputText, setInputText] = useState('');
-  
+
   const handleSend = () => {
     if (inputText.trim().length === 0) return;
-    
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -36,10 +36,10 @@ export default function ChatScreen() {
       isUser: true,
       timestamp: new Date(),
     };
-    
+
     setMessages(prevMessages => [...prevMessages, userMessage]);
     setInputText('');
-    
+
     // Simulate assistant response
     setTimeout(() => {
       const botMessage: Message = {
@@ -50,7 +50,7 @@ export default function ChatScreen() {
       };
       setMessages(prevMessages => [...prevMessages, botMessage]);
     }, 1000);
-    
+
     Keyboard.dismiss();
   };
 
@@ -73,7 +73,7 @@ export default function ChatScreen() {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Spiritual Companion</Text>
       </View>
-      
+
       <FlatList
         data={messages}
         renderItem={renderMessage}
@@ -81,7 +81,7 @@ export default function ChatScreen() {
         contentContainerStyle={styles.messagesList}
         inverted={false}
       />
-      
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -91,10 +91,10 @@ export default function ChatScreen() {
           multiline
           maxLength={500}
         />
-        <PrimaryButton 
+        <PrimaryButton
           title=""
           onPress={handleSend}
-          icon={<Send size={20} color="white" />}
+          icon={<MaterialCommunityIcons name="send" size={20} color="white" />}
           size="md"
           style={styles.sendButton}
         />

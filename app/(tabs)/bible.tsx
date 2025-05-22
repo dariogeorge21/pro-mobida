@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
 import { theme } from '@/styles/theme';
 import { CustomCard } from '@/components/ui/CustomCard';
-import { ChevronLeft, ChevronRight, BookOpen, Search } from 'lucide-react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IconButton } from '@/components/ui/IconButton';
 
 // Mock data
@@ -38,17 +38,17 @@ export default function BibleScreen() {
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [currentView, setCurrentView] = useState<BibleState>('books');
-  
+
   const handleBookSelect = (bookId: string) => {
     setSelectedBook(bookId);
     setCurrentView('chapters');
   };
-  
+
   const handleChapterSelect = (chapter: number) => {
     setSelectedChapter(chapter);
     setCurrentView('verses');
   };
-  
+
   const navigateBack = () => {
     if (currentView === 'verses') {
       setCurrentView('chapters');
@@ -58,11 +58,11 @@ export default function BibleScreen() {
       setSelectedBook(null);
     }
   };
-  
+
   const renderBook = ({ item }: { item: typeof BIBLE_BOOKS[0] }) => (
     <Animated.View entering={FadeInRight.duration(400).delay(100)}>
-      <CustomCard 
-        style={styles.bookCard} 
+      <CustomCard
+        style={styles.bookCard}
         onPress={() => handleBookSelect(item.id)}
       >
         <Text style={styles.bookTitle}>{item.name}</Text>
@@ -70,7 +70,7 @@ export default function BibleScreen() {
       </CustomCard>
     </Animated.View>
   );
-  
+
   const renderChapterNumber = ({ item }: { item: number }) => (
     <Pressable
       style={styles.chapterNumber}
@@ -79,13 +79,13 @@ export default function BibleScreen() {
       <Text style={styles.chapterNumberText}>{item}</Text>
     </Pressable>
   );
-  
+
   // Find the selected book
   const book = BIBLE_BOOKS.find(b => b.id === selectedBook);
-  
+
   // Generate array of chapter numbers
   const chapters = book ? Array.from({ length: book.chapters }, (_, i) => i + 1) : [];
-  
+
   // Render Bible books grid
   const renderBooksView = () => (
     <FlatList
@@ -97,20 +97,20 @@ export default function BibleScreen() {
       contentContainerStyle={styles.booksList}
     />
   );
-  
+
   // Render chapters grid
   const renderChaptersView = () => (
     <View style={styles.chapterContainer}>
       <View style={styles.navigationHeader}>
         <IconButton
-          icon={<ChevronLeft size={24} color={theme.colors.primary.main} />}
+          icon={<MaterialCommunityIcons name="chevron-left" size={24} color={theme.colors.primary.main} />}
           onPress={navigateBack}
           variant="ghost"
         />
         <Text style={styles.navigationTitle}>{book?.name}</Text>
         <View style={{ width: 40 }} />
       </View>
-      
+
       <FlatList
         data={chapters}
         renderItem={renderChapterNumber}
@@ -120,19 +120,19 @@ export default function BibleScreen() {
       />
     </View>
   );
-  
+
   // Render verses
   const renderVersesView = () => (
     <View style={styles.versesContainer}>
       <View style={styles.navigationHeader}>
         <IconButton
-          icon={<ChevronLeft size={24} color={theme.colors.primary.main} />}
+          icon={<MaterialCommunityIcons name="chevron-left" size={24} color={theme.colors.primary.main} />}
           onPress={navigateBack}
           variant="ghost"
         />
         <Text style={styles.navigationTitle}>{book?.name} {selectedChapter}</Text>
         <IconButton
-          icon={<ChevronRight size={24} color={theme.colors.primary.main} />}
+          icon={<MaterialCommunityIcons name="chevron-right" size={24} color={theme.colors.primary.main} />}
           onPress={() => {
             if (book && selectedChapter && selectedChapter < book.chapters) {
               setSelectedChapter(selectedChapter + 1);
@@ -142,7 +142,7 @@ export default function BibleScreen() {
           disabled={!book || !selectedChapter || selectedChapter >= book.chapters}
         />
       </View>
-      
+
       <ScrollView style={styles.versesList}>
         {SAMPLE_VERSES.map(verse => (
           <View key={verse.id} style={styles.verseContainer}>
@@ -153,18 +153,18 @@ export default function BibleScreen() {
       </ScrollView>
     </View>
   );
-  
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Holy Bible</Text>
         <IconButton
-          icon={<Search size={22} color={theme.colors.text.secondary} />}
+          icon={<MaterialCommunityIcons name="magnify" size={22} color={theme.colors.text.secondary} />}
           onPress={() => {}}
           variant="ghost"
         />
       </View>
-      
+
       {currentView === 'books' && renderBooksView()}
       {currentView === 'chapters' && renderChaptersView()}
       {currentView === 'verses' && renderVersesView()}
